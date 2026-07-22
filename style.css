@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -47,7 +48,6 @@ html, body {
     pointer-events: auto;
 }
 
-/* 第 1 幕：等待 */
 #scene-wait {
     background: radial-gradient(circle at 50% 60%, #252a6b 0%, #111543 40%, #050614 100%);
 }
@@ -147,7 +147,6 @@ html, body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 第 2 幕：翻信 */
 #scene-letter {
     background: radial-gradient(circle at 50% 40%, #2a2e75 0%, #151845 45%, #050614 100%);
 }
@@ -223,7 +222,6 @@ html, body {
     border-radius: 10px;
 }
 
-/* 第 3 幕：选择 */
 #scene-choice {
     background: radial-gradient(circle at 50% 50%, #30358a 0%, #151845 55%, #050614 100%);
 }
@@ -290,7 +288,6 @@ html, body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* 第 4 幕：结果 */
 #scene-result {
     background: radial-gradient(circle at 50% 50%, #454bb0 0%, #1c2060 50%, #0b0d24 100%);
 }
@@ -332,7 +329,6 @@ html, body {
     line-height: 1.6;
 }
 
-/* 弹窗 */
 .modal {
     position: fixed;
     top: 0;
@@ -398,7 +394,6 @@ html, body {
     to { opacity: 1; transform: scale(1); }
 }
 
-/* 移动端适配 */
 @media (max-width: 480px) {
     .glow-ring {
         width: 80vw;
@@ -425,7 +420,6 @@ html, body {
     }
 }
 
-/* 超小屏 */
 @media (max-width: 360px) {
     .character {
         border-radius: 24px;
