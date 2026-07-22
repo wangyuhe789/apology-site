@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>给老大的道歉信</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 星空背景 -->
+    <canvas id="starfield"></canvas>
+
+    <!-- 音频：自动循环播放背景音乐 -->
+    <audio id="bgm" loop preload="auto">
+        <source src="assets/bgm.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- 第 1 幕：等待 -->
+    <section id="scene-wait" class="scene active">
+        <div class="glow-ring"></div>
+        <div class="character-wrap" id="characterBtn" role="button" aria-label="打开信件">
+            <!-- 占位角色图：替换 assets/character.png -->
+            <img src="assets/character.png" alt="角色" class="character" id="characterImg">
+            <div class="character-shadow"></div>
+        </div>
+        <div class="hint-text">
+            <p class="line1">老大，点我一下嘛</p>
+            <p class="line2">小恐龙有话要说，不准瞪我</p>
+        </div>
+    </section>
+
+    <!-- 第 2 幕：翻信 -->
+    <section id="scene-letter" class="scene">
+        <div class="envelope-wrap">
+            <div class="envelope" id="envelope">
+                <div class="envelope-face front">
+                    <svg class="seal" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 4L28.5 17.5H43L31.5 26L35.5 40L24 31.5L12.5 40L16.5 26L5 17.5H19.5L24 4Z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <div class="envelope-face back"></div>
+            </div>
+        </div>
+
+        <div class="letter-paper" id="letterPaper">
+            <img src="assets/letter.jpg" alt="道歉信" class="letter-image">
+        </div>
+    </section>
+
+    <!-- 第 3 幕：选择 -->
+    <section id="scene-choice" class="scene">
+        <div class="choice-box">
+            <p class="choice-question">所以，你愿意再给我一次机会吗？</p>
+            <div class="choice-btns">
+                <button class="btn btn-yes" id="btnYes">原谅你啦</button>
+                <button class="btn btn-no" id="btnNo">才不要</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第 4 幕：结果 -->
+    <section id="scene-result" class="scene">
+        <div class="result-content" id="resultContent">
+            <div class="big-heart">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 4L28.5 17.5H43L31.5 26L35.5 40L24 31.5L12.5 40L16.5 26L5 17.5H19.5L24 4Z" fill="currentColor"/>
+                </svg>
+            </div>
+            <h2 id="resultTitle">谢谢你</h2>
+            <p id="resultText">我会把这句话刻进星星里。</p>
+        </div>
+        <button class="btn btn-replay" id="btnReplay">再看一遍</button>
+    </section>
+
+    <!-- 挽留弹窗 -->
+    <div class="modal" id="modal">
+        <div class="modal-box">
+            <p>我知道我还没做好，但请别关掉这扇窗。</p>
+            <p>再给我一点时间，好吗？</p>
+            <button class="btn btn-yes" id="btnModalOk">好</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
