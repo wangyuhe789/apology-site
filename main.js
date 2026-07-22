@@ -1,4 +1,3 @@
-// 星空背景
 const canvas = document.getElementById('starfield');
 const ctx = canvas.getContext('2d');
 let width, height;
@@ -130,7 +129,6 @@ function animateBackground() {
     stars.forEach(star => star.draw());
     meteors.forEach(meteor => { meteor.update(); meteor.draw(); });
 
-    // 爱心持续飘落（很少量）
     if (Math.random() < 0.015) hearts.push(new Heart());
     hearts = hearts.filter(h => h.alpha > 0);
     hearts.forEach(h => { h.update(); h.draw(); });
@@ -146,7 +144,6 @@ window.addEventListener('resize', () => {
 
 initBackground();
 
-// 场景切换
 const scenes = {
     wait: document.getElementById('scene-wait'),
     letter: document.getElementById('scene-letter'),
@@ -159,20 +156,16 @@ function switchScene(name) {
     scenes[name].classList.add('active');
 }
 
-// 音乐
 const bgm = document.getElementById('bgm');
 let musicStarted = false;
 
 function startMusic() {
     if (musicStarted) return;
     bgm.volume = 0.45;
-    bgm.play().catch(() => {
-        // 浏览器自动播放限制，静默失败
-    });
+    bgm.play().catch(() => {});
     musicStarted = true;
 }
 
-// 角色点击 → 翻信
 const characterBtn = document.getElementById('characterBtn');
 const envelope = document.getElementById('envelope');
 const letterPaper = document.getElementById('letterPaper');
@@ -180,7 +173,6 @@ const letterPaper = document.getElementById('letterPaper');
 characterBtn.addEventListener('click', () => {
     startMusic();
 
-    // 角色淡出
     gsap.to(characterBtn, { scale: 0.6, opacity: 0, duration: 0.6, ease: 'back.in(1.7)' });
     gsap.to('.hint-text', { opacity: 0, y: -20, duration: 0.4 });
     gsap.to('.glow-ring', { opacity: 0, duration: 0.6 });
@@ -188,14 +180,12 @@ characterBtn.addEventListener('click', () => {
     setTimeout(() => {
         switchScene('letter');
 
-        // 信封从上方落下
         gsap.fromTo(envelope,
             { y: -200, opacity: 0, scale: 0.8 },
             { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' }
         );
 
         setTimeout(() => {
-            // 3D 翻转打开信封
             gsap.to(envelope, {
                 rotationY: 180,
                 duration: 1,
@@ -216,12 +206,10 @@ function showLetter() {
         { scale: 1, opacity: 1, y: '-50%', duration: 0.9, ease: 'power3.out' }
     );
 
-    // 图片展示 10 秒后自动进入选择页，也可以点击信纸提前跳过
     skipTimeout = setTimeout(() => {
         goToChoice();
     }, 10000);
 
-    // 点击信纸也可以提前跳过
     letterPaper.addEventListener('click', skipLetter, { once: true });
 }
 
@@ -238,7 +226,6 @@ function goToChoice() {
     }, 550);
 }
 
-// 选择按钮
 const btnYes = document.getElementById('btnYes');
 const btnNo = document.getElementById('btnNo');
 const modal = document.getElementById('modal');
@@ -248,7 +235,6 @@ const resultText = document.getElementById('resultText');
 const bigHeart = document.querySelector('.big-heart');
 
 btnYes.addEventListener('click', () => {
-    // 爱心爆发
     for (let i = 0; i < 40; i++) {
         hearts.push(new Heart(width / 2, height / 2, true));
     }
@@ -279,7 +265,6 @@ function animateResult() {
     gsap.fromTo('#btnReplay', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.5 });
 }
 
-// 再看一遍
 const btnReplay = document.getElementById('btnReplay');
 btnReplay.addEventListener('click', () => {
     gsap.set(envelope, { rotationY: 0, opacity: 1, scale: 1, y: 0 });
@@ -290,7 +275,6 @@ btnReplay.addEventListener('click', () => {
     switchScene('wait');
 });
 
-// 页面首次加载：淡入
 window.addEventListener('load', () => {
     gsap.fromTo('body', { opacity: 0 }, { opacity: 1, duration: 1.2 });
 });
