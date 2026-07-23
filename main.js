@@ -14,9 +14,7 @@ function resize() {
 }
 
 class Star {
-    constructor() {
-        this.reset();
-    }
+    constructor() { this.reset(); }
     reset() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
@@ -36,9 +34,7 @@ class Star {
 }
 
 class Meteor {
-    constructor() {
-        this.reset(true);
-    }
+    constructor() { this.reset(true); }
     reset(initial = false) {
         this.x = Math.random() * width * 1.2 + width * 0.1;
         this.y = Math.random() * height * 0.4 - 100;
@@ -50,16 +46,11 @@ class Meteor {
         this.delay = initial ? Math.random() * 200 : Math.random() * 400;
     }
     update() {
-        if (this.delay > 0) {
-            this.delay--;
-            return;
-        }
+        if (this.delay > 0) { this.delay--; return; }
         this.x -= this.speed * Math.cos(this.angle);
         this.y += this.speed * Math.sin(this.angle);
         this.life++;
-        if (this.life > this.maxLife || this.x < -200 || this.y > height + 200) {
-            this.reset();
-        }
+        if (this.life > this.maxLife || this.x < -200 || this.y > height + 200) this.reset();
     }
     draw() {
         if (this.delay > 0) return;
@@ -91,7 +82,6 @@ class Heart {
         this.color = `hsl(${Math.random() * 40 + 220}, 90%, ${Math.random() * 20 + 70}%)`;
         this.rotation = Math.random() * Math.PI * 2;
         this.rotSpeed = (Math.random() - 0.5) * 0.04;
-        this.burst = burst;
     }
     update() {
         this.x += this.speedX;
@@ -128,11 +118,9 @@ function animateBackground() {
     ctx.clearRect(0, 0, width, height);
     stars.forEach(star => star.draw());
     meteors.forEach(meteor => { meteor.update(); meteor.draw(); });
-
     if (Math.random() < 0.015) hearts.push(new Heart());
     hearts = hearts.filter(h => h.alpha > 0);
     hearts.forEach(h => { h.update(); h.draw(); });
-
     requestAnimationFrame(animateBackground);
 }
 
@@ -172,19 +160,16 @@ const letterPaper = document.getElementById('letterPaper');
 
 characterBtn.addEventListener('click', () => {
     startMusic();
-
     gsap.to(characterBtn, { scale: 0.6, opacity: 0, duration: 0.6, ease: 'back.in(1.7)' });
     gsap.to('.hint-text', { opacity: 0, y: -20, duration: 0.4 });
     gsap.to('.glow-ring', { opacity: 0, duration: 0.6 });
 
     setTimeout(() => {
         switchScene('letter');
-
         gsap.fromTo(envelope,
             { y: -200, opacity: 0, scale: 0.8 },
             { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' }
         );
-
         setTimeout(() => {
             gsap.to(envelope, {
                 rotationY: 180,
@@ -199,17 +184,15 @@ characterBtn.addEventListener('click', () => {
 let skipTimeout;
 
 function showLetter() {
-    letterPaper.style.display = 'block';
+    // 用 flexbox 居中，GSAP 只管淡入，不碰 transform 定位
+    letterPaper.style.display = 'flex';
     gsap.to(envelope, { opacity: 0, duration: 0.4 });
     gsap.fromTo(letterPaper,
-        { scale: 0.4, opacity: 0, y: '-40%' },
-        { scale: 1, opacity: 1, y: '-50%', duration: 0.9, ease: 'power3.out' }
+        { opacity: 0, scale: 0.85 },
+        { opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' }
     );
 
-    skipTimeout = setTimeout(() => {
-        goToChoice();
-    }, 10000);
-
+    skipTimeout = setTimeout(() => { goToChoice(); }, 10000);
     letterPaper.addEventListener('click', skipLetter, { once: true });
 }
 
@@ -219,7 +202,10 @@ function skipLetter() {
 }
 
 function goToChoice() {
-    gsap.to(letterPaper, { opacity: 0, scale: 0.95, duration: 0.5 });
+    gsap.to(letterPaper, {
+        opacity: 0, duration: 0.5,
+        onComplete: () => { letterPaper.style.display = 'none'; }
+    });
     setTimeout(() => {
         switchScene('choice');
         gsap.fromTo('.choice-box', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 });
@@ -235,9 +221,7 @@ const resultText = document.getElementById('resultText');
 const bigHeart = document.querySelector('.big-heart');
 
 btnYes.addEventListener('click', () => {
-    for (let i = 0; i < 40; i++) {
-        hearts.push(new Heart(width / 2, height / 2, true));
-    }
+    for (let i = 0; i < 40; i++) hearts.push(new Heart(width / 2, height / 2, true));
     switchScene('result');
     resultTitle.textContent = '谢谢你';
     resultText.textContent = '我会把这句话刻进星星里。';
@@ -246,9 +230,7 @@ btnYes.addEventListener('click', () => {
     animateResult();
 });
 
-btnNo.addEventListener('click', () => {
-    modal.classList.add('show');
-});
+btnNo.addEventListener('click', () => { modal.classList.add('show'); });
 
 btnModalOk.addEventListener('click', () => {
     modal.classList.remove('show');
@@ -268,7 +250,8 @@ function animateResult() {
 const btnReplay = document.getElementById('btnReplay');
 btnReplay.addEventListener('click', () => {
     gsap.set(envelope, { rotationY: 0, opacity: 1, scale: 1, y: 0 });
-    gsap.set(letterPaper, { opacity: 0, scale: 0.6, y: '-50%', display: 'none' });
+    letterPaper.style.display = 'none';
+    gsap.set(letterPaper, { opacity: 0, scale: 1 });
     gsap.set(characterBtn, { scale: 1, opacity: 1 });
     gsap.set('.hint-text', { opacity: 1, y: 0 });
     gsap.set('.glow-ring', { opacity: 0.6 });
