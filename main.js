@@ -5,6 +5,76 @@ let stars = [];
 let meteors = [];
 let hearts = [];
 
+// 歌词：[时间(秒), 歌词]
+const lyrics = [
+    [0, '♪'],
+    [4, '我的心在颤抖'],
+    [9, '是对你心动后'],
+    [14, '留在原地 扑通 扑通'],
+    [19, '好像被你占有'],
+    [23, '被你知晓的通透'],
+    [28, '小鹿乱撞在三重奏'],
+    [33, 'U r My lady'],
+    [37, '表达的爱我随笔'],
+    [42, '这首歌是你爱我的回礼'],
+    [47, '你柔顺的发尾'],
+    [51, '让你的魅力加倍'],
+    [56, '你穿搭 也是我爱的搭配'],
+    [62, '感谢神明让我与你相见'],
+    [68, '相见后我们就相恋'],
+    [73, '我喜上颜开但闭上眼'],
+    [78, '这心跳加快才会更方便'],
+    [84, '我相信神无所不能'],
+    [89, '委派我做你守护神'],
+    [94, '不能你不是 你是'],
+    [100, '你才是这颗心脏的主人'],
+    [106, '快'],
+    [109, '牵住我的手'],
+    [113, '来'],
+    [116, '让你把我守候'],
+    [120, '爱'],
+    [123, '是彼此都拥有'],
+    [127, '我'],
+    [130, '有你就足够'],
+    [135, 'You are my happiness'],
+    [140, '说出 我爱你'],
+    [145, '肉麻的甜言蜜语'],
+    [150, '我听不腻'],
+    [154, 'You are my happiness'],
+    [159, '对你更在意'],
+    [164, '快为我的心脏来洗礼'],
+    [170, '♪'],
+    [175, '你才是这颗心脏的主人'],
+    [180, '♪'],
+];
+
+const lyricsBar = document.getElementById('lyricsBar');
+const lyricLine = document.getElementById('lyricLine');
+let currentLyricIndex = -1;
+
+function updateLyrics(currentTime) {
+    // 循环播放时重新计算
+    const loopTime = currentTime % lyrics[lyrics.length - 1][0];
+    let newIndex = 0;
+    for (let i = lyrics.length - 1; i >= 0; i--) {
+        if (loopTime >= lyrics[i][0]) {
+            newIndex = i;
+            break;
+        }
+    }
+    if (newIndex !== currentLyricIndex) {
+        currentLyricIndex = newIndex;
+        // 淡出旧歌词
+        lyricLine.classList.add('fade-out');
+        lyricLine.classList.remove('fade-in');
+        setTimeout(() => {
+            lyricLine.textContent = lyrics[newIndex][1];
+            lyricLine.classList.remove('fade-out');
+            lyricLine.classList.add('fade-in');
+        }, 400);
+    }
+}
+
 function resize() {
     width = window.innerWidth;
     height = window.innerHeight;
@@ -152,6 +222,12 @@ function startMusic() {
     bgm.volume = 0.45;
     bgm.play().catch(() => {});
     musicStarted = true;
+    // 显示歌词条
+    lyricsBar.classList.add('show');
+    // 同步歌词
+    bgm.addEventListener('timeupdate', () => {
+        updateLyrics(bgm.currentTime);
+    });
 }
 
 const characterBtn = document.getElementById('characterBtn');
@@ -255,6 +331,10 @@ btnReplay.addEventListener('click', () => {
     gsap.set(characterBtn, { scale: 1, opacity: 1 });
     gsap.set('.hint-text', { opacity: 1, y: 0 });
     gsap.set('.glow-ring', { opacity: 0.6 });
+    // 重置歌词
+    lyricsBar.classList.remove('show');
+    currentLyricIndex = -1;
+    lyricLine.textContent = '';
     switchScene('wait');
 });
 
