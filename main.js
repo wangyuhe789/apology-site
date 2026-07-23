@@ -288,10 +288,7 @@ characterBtn.addEventListener('click', () => {
     }, 700);
 });
 
-let skipTimeout;
-
 function showLetter() {
-    // 用 flexbox 居中，GSAP 只管淡入，不碰 transform 定位
     letterPaper.style.display = 'flex';
     gsap.to(envelope, { opacity: 0, duration: 0.4 });
     gsap.fromTo(letterPaper,
@@ -299,14 +296,18 @@ function showLetter() {
         { opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' }
     );
 
-    skipTimeout = setTimeout(() => { goToChoice(); }, 10000);
-    letterPaper.addEventListener('click', skipLetter, { once: true });
+    // 信件显示后，延迟 1.5 秒出现"看完了"按钮
+    setTimeout(() => {
+        document.getElementById('btnLetterContinue').classList.add('show');
+    }, 1500);
 }
 
-function skipLetter() {
-    clearTimeout(skipTimeout);
+// 手动跳转按钮
+const btnLetterContinue = document.getElementById('btnLetterContinue');
+btnLetterContinue.addEventListener('click', () => {
+    btnLetterContinue.classList.remove('show');
     goToChoice();
-}
+});
 
 function goToChoice() {
     gsap.to(letterPaper, {
@@ -362,6 +363,8 @@ btnReplay.addEventListener('click', () => {
     gsap.set(characterBtn, { scale: 1, opacity: 1 });
     gsap.set('.hint-text', { opacity: 1, y: 0 });
     gsap.set('.glow-ring', { opacity: 0.6 });
+    // 重置跳转按钮
+    btnLetterContinue.classList.remove('show');
     // 重置歌词
     lyricsBar.classList.remove('show');
     currentLyricIndex = -1;
