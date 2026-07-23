@@ -380,6 +380,52 @@ html, body {
     padding: 16px 0;
 }
 
+/* 信件跳转按钮：底部居中，歌词条上方 */
+.btn-letter-continue {
+    position: fixed;
+    bottom: 76px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    border: none;
+    outline: none;
+    padding: 12px 36px;
+    border-radius: 30px;
+    font-size: clamp(15px, 4vw, 17px);
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #8c96ff 0%, #5c68e3 100%);
+    color: #fff;
+    box-shadow: 0 8px 28px rgba(140, 150, 255, 0.45);
+    white-space: nowrap;
+}
+
+.btn-letter-continue.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.btn-letter-continue:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+@media (max-width: 480px) {
+    .btn-letter-continue {
+        bottom: 68px;
+        padding: 11px 30px;
+    }
+}
+
+@media (max-width: 360px) {
+    .btn-letter-continue {
+        bottom: 64px;
+    }
+}
+
 /* 歌词条：底部半透明悬浮 */
 .lyrics-bar {
     position: fixed;
